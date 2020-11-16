@@ -1,10 +1,10 @@
 #ifndef HEADER_
 #define HEADER_
 
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdbool.h>
-#include<string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
 
 // #define SEP ", \"\n`()<>.!-"
 #define SEP " .,()<>!:_`?\""
@@ -14,6 +14,9 @@
 #define NREVDIR "negative_reviews/"
 #define PFLIST "positive_file_list.txt"
 #define NFLIST "negative_file_list.txt"
+#define PSMNT "positive-sentiment.txt"
+#define NSMNT "negative-sentiment.txt"
+#define RES "result.txt"
 
 FILE *fp_read(char *filename);
 FILE *fp_write(char *filename);
@@ -37,7 +40,7 @@ extern list *n_list;
 node *create_node(char *str);
 void push_node(list *lst, node *new_node);
 void free_list(list *lst);
-void print_list(list *lst);
+void print_list(bool positive);
 void count_in_list(char *str, bool positive);
 
 #endif

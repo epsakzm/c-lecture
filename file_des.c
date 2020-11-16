@@ -4,7 +4,7 @@ FILE *fp_write(char *filename)
 {
 	FILE *fp;
 
-	if(!(fp = fopen(filename, "a")))
+	if (!(fp = fopen(filename, "w")))
 	{
 		perror(filename);
 		exit(1);
@@ -16,7 +16,7 @@ FILE *fp_read(char *filename)
 {
 	FILE *fp;
 
-	if(!(fp = fopen(filename, "r")))
+	if (!(fp = fopen(filename, "r")))
 	{
 		perror(filename);
 		exit(1);

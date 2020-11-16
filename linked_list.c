@@ -5,11 +5,11 @@ node *create_node(char *str)
 	node *new_node;
 	int len;
 
-	if(!(new_node = (node*)malloc(sizeof(node))))
+	if (!(new_node = (node *)malloc(sizeof(node))))
 		return NULL;
 	len = strlen(str);
 
-	new_node->str = (char*)malloc(sizeof(char) * (len + 1));
+	new_node->str = (char *)malloc(sizeof(char) * (len + 1));
 	strncpy(new_node->str, str, len);
 	(new_node->str)[len] = '\0';
 
@@ -21,7 +21,7 @@ node *create_node(char *str)
 
 void push_node(list *lst, node *new_node)
 {
-	if(lst->head == NULL)
+	if (lst->head == NULL)
 	{
 		lst->head = new_node;
 		lst->tail = new_node;
@@ -39,7 +39,7 @@ void free_list(list *lst)
 	node *temp2;
 
 	temp1 = lst->head;
-	while(temp1)
+	while (temp1)
 	{
 		temp2 = temp1;
 		temp1 = temp2->link;
@@ -49,16 +49,20 @@ void free_list(list *lst)
 	free(lst);
 }
 
-void print_list(list *lst)
+void print_list(bool positive)
 {
+	FILE *fp;
 	node *temp;
 
-	temp = lst->head;
-	while(temp)
+	fp = positive ? fp_write(PSMNT) : fp_write(NSMNT);
+	temp = positive ? p_list->head : n_list->head;
+	while (temp)
 	{
-		printf("|%s| -> |%d| \t", temp->str, temp->count);
+		if (temp->count)
+			fprintf(fp, "%s\t%d\n", temp->str, temp->count);
 		temp = temp->link;
 	}
+	fclose(fp);
 }
 
 void count_in_list(char *str, bool positive)
@@ -68,13 +72,13 @@ void count_in_list(char *str, bool positive)
 	temp = positive ? p_list->head : n_list->head;
 	while (temp)
 	{
-		if(!strcmp(temp->str, str))
+		if (!strcmp(temp->str, str))
 		{
 			temp->count += 1;
 			break;
 		}
 		//단어보다 알파벳이 크면 검색중지
-		else if(strcmp(temp->str, str) > 0)
+		else if (strcmp(temp->str, str) > 0)
 			break;
 		temp = temp->link;
 	}

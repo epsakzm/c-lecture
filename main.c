@@ -20,8 +20,8 @@ void make_list(list *lst, char *filename)
 
 void init(void)
 {
-	p_list = (list*)malloc(sizeof(list));
-	n_list = (list*)malloc(sizeof(list));
+	p_list = (list *)malloc(sizeof(list));
+	n_list = (list *)malloc(sizeof(list));
 	make_list(p_list, PWDS);
 	make_list(n_list, NWDS);
 }
@@ -32,17 +32,17 @@ void search_in_files(FILE *fp, bool positive)
 	char *token;
 	bool is_first;
 
-	while(!feof(fp))
+	while (!feof(fp))
 	{
 		is_first = true;
 		fgets(buf, 512, fp);
-		while(1)
+		while (1)
 		{
-			if(is_first)
+			if (is_first)
 				token = strtok(buf, SEP);
 			else
 				token = strtok(NULL, SEP);
-			if(token == NULL)
+			if (token == NULL)
 				break;
 			// printf("%s| ", token);
 			//단어 찾음
@@ -68,13 +68,15 @@ void search_files(char *filename, bool positive)
 	fclose(fp);
 }
 
-void count_words(FILE *fp, bool positive)
+void count_words(bool positive)
 {
+	FILE *fp;
 	char filename[20];
 
-	while(!feof(fp))
+	fp = positive ? fp_read(PFLIST) : fp_read(NFLIST);
+	while (!feof(fp))
 	{
-		fscanf(fp, "%s\n" ,filename);
+		fscanf(fp, "%s\n", filename);
 		search_files(filename, positive);
 	}
 	fclose(fp);
@@ -83,18 +85,10 @@ void count_words(FILE *fp, bool positive)
 int main(void)
 {
 	init();
-	// print_list(p_list);
-	// print_list(n_list);
-	FILE *fp_pos_fl;
-	FILE *fp_neg_fl;
-	fp_pos_fl = fp_read(PFLIST);
-	fp_neg_fl = fp_read(NFLIST);
-	count_words(fp_pos_fl, true);
-	count_words(fp_neg_fl, false);
-	print_list(p_list);
-	// print_list(n_list);
-
-	//메모리 할당해제
+	count_words(true);
+	count_words(false);
+	print_list(true);
+	print_list(false);
 	free_list(p_list);
 	free_list(n_list);
 	return 0;
