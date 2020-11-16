@@ -1,5 +1,5 @@
 CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror -g
+CFLAGS	= -g #-Wall -Wextra -Werror -g
 SRCS	= ${wildcard *.c}
 OBJS	= ${SRCS:.c=.o}
 TARGET	= run.exe

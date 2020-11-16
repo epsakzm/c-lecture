@@ -4,10 +4,10 @@ FILE *fp_write(char *filename)
 {
 	FILE *fp;
 
-	if(!(fp = fopen("positive-words.txt", "a")))
+	if(!(fp = fopen(filename, "a")))
 	{
 		perror(filename);
-		return NULL;
+		exit(1);
 	}
 	return fp;
 }
@@ -16,10 +16,10 @@ FILE *fp_read(char *filename)
 {
 	FILE *fp;
 
-	if(!(fp = fopen("positive-words.txt", "r")))
+	if(!(fp = fopen(filename, "r")))
 	{
 		perror(filename);
-		return NULL;
+		exit(1);
 	}
 	return fp;
 }
