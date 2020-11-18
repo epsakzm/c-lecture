@@ -1,0 +1,11 @@
+test/01.txt : positive
+test/02.txt : positive
+test/03.txt : positive
+test/04.txt : positive
+test/05.txt : positive
+test/06.txt : positive
+test/07.txt : positive
+test/08.txt : positive
+test/09.txt : positive
+test/10.txt : positive
+test/test.txt : negative
