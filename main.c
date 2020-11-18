@@ -233,9 +233,10 @@ STATE check_file(char *filename)
 	char buf[LINE_SIZE];
 	char *token;
 	bool is_first;
-	int p_cnt = 0, n_cnt = 0;
+	int score;
 
 	fp = fp_read(filename);
+	score = 0;
 	while (!feof(fp))
 	{
 		is_first = true;
@@ -249,17 +250,13 @@ STATE check_file(char *filename)
 			if (token == NULL)
 				break;
 			is_first = false;
-			p_cnt += check_count(token, true);
-			n_cnt += check_count(token, false);
+			score += check_count(token, true);
+			score -= check_count(token, false);
 			// printf("p_cnt : %d, n_cnt: %d\n", p_cnt, n_cnt);
 		}
 	}
 	fclose(fp);
-	if (p_cnt > n_cnt)
-		return POSITIVE;
-	else if (p_cnt < n_cnt)
-		return NEGATIVE;
-	return DONTKNOW;
+	return score >= 0 ? (score == 0 ? DONTKNOW : POSITIVE) : NEGATIVE;
 }
 
 void write_file_state(STATE state, FILE *fp, char *filename)
