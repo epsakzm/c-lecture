@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -9,7 +8,9 @@
 #define LINE_SIZE 512
 #define BUF_SIZE 30
 
+// tokenizer separator
 #define SEP " .,()<>!:_`?\""
+
 #define PWDS "positive-words.txt"
 #define NWDS "negative-words.txt"
 #define PFLIST "positive_file_list.txt"
@@ -46,6 +47,7 @@ typedef enum STATE_
 	DONTKNOW
 } STATE;
 
+//긍정, 부정 단어리스트
 list *p_list;
 list *n_list;
 
@@ -108,7 +110,7 @@ void write_list(bool positive)
 	while (temp)
 	{
 		if (temp->count)
-			fprintf(fp, "%s\t%d\n", temp->str, temp->count);
+			fprintf(fp, "%s\t\t%d\n", temp->str, temp->count);
 		temp = temp->link;
 	}
 	fclose(fp);
@@ -189,14 +191,12 @@ void search_in_files(FILE *fp, bool positive)
 				token = strtok(NULL, SEP);
 			if (token == NULL)
 				break;
-			// printf("%s| ", token);
 			count_in_list(token, positive);
 			is_first = false;
 		}
 	}
 }
 
-// mode == 0 pos, mode == 1 neg
 void search_files(char *filename, bool positive)
 {
 	FILE *fp;
@@ -208,7 +208,6 @@ void search_files(char *filename, bool positive)
 		strcpy(path, NREVDIR);
 	strcat(path, filename);
 	fp = fp_read(path);
-	// printf("%s|\n", path);
 	search_in_files(fp, positive);
 	fclose(fp);
 }
@@ -252,10 +251,10 @@ STATE check_file(char *filename)
 			is_first = false;
 			score += check_count(token, true);
 			score -= check_count(token, false);
-			// printf("p_cnt : %d, n_cnt: %d\n", p_cnt, n_cnt);
 		}
 	}
 	fclose(fp);
+	printf("score of \"%s\" : %d\n", filename, score);
 	return score >= 0 ? (score == 0 ? DONTKNOW : POSITIVE) : NEGATIVE;
 }
 
@@ -293,14 +292,19 @@ void check_dir(void)
 
 int main(void)
 {
+	//초기화
 	init();
+	//카운트
 	search_file_list(true);
 	search_file_list(false);
+	//positive/negative-sentiment.txt
 	write_list(true);
 	write_list(false);
 	printf("count done\n");
+	//result.txt
 	check_dir();
 	printf("check done\n");
+	//free malloc
 	free_list(p_list);
 	free_list(n_list);
 	return 0;
